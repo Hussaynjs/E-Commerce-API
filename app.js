@@ -16,11 +16,16 @@ const xss = require('xss-clean')
 const helmet = require('helmet')
 const mongoSanitize = require('express-mongo-sanitize')
 
+const swaggerUI = require('swagger-ui-express')
+const YAML = require('yamljs')
+const swaggerDocument = YAML.load('./swagger.yaml')
+
 cloudinary.config({
     cloud_name:process.env.CLOUD_NAME,
     api_key:process.env.CLOUD_API,
     api_secret:process.env.CLOUD_SECRET
 })
+
 
 // db
 const connectDB = require('./db/connect')
@@ -42,6 +47,11 @@ app.use(mongoSanitize())
 app.use(xss())
 app.use(helmet())
 
+app.get('/', (req, res) => {
+    res.send('<h1>API DOCS</h1>')
+})
+
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 // routes
 const authRouter = require('./routers/authRouter')
 const userRouter = require('./routers/userRouter')
