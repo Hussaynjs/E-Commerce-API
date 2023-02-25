@@ -48,7 +48,7 @@ app.use(xss())
 app.use(helmet())
 
 app.get('/', (req, res) => {
-    res.send('<h1>API DOCS</h1>')
+    res.send('<h1>API DOCS</h1><a href="/api-docs">Documentation</a>')
 })
 
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument))
